@@ -4,4 +4,8 @@ export default class extends Controller {
   connect() {
     console.log("connected: ", this.element)
   }
+
+  getUrl(e){
+    navigator.clipboard.writeText(e.target.src);
+  }
 }
