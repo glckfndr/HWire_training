@@ -3,8 +3,9 @@
 <% @images.each do |image| %>
   <%= tag.section class: 'my-5', data: {controller: 'images'} do %>
     <%= image_tag image.url, class: 'image-thumbnail rounded d-block',
-            alt: image.title, data: {'action': 'click->images#getUrl'} %>
-    <p> <%= image.title %> </p>
+            alt: image.title, data: {'action': 'click->images#getUrl',
+            'images-target': 'image'} %>
+
   <% end %>
 <% end %>
 
