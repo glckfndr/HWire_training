@@ -1,11 +1,10 @@
 import { Controller } from "@hotwired/stimulus";
 
 export default class extends Controller {
-  connect() {
-    console.log("connected: ", this.element)
-  }
 
   getUrl(e){
-    navigator.clipboard.writeText(e.target.src);
+    this.dispatch("copy", {detail: {content: `Image ${e.target.src} has been copied!`}})
+    navigator.clipboard.writeText(e.target.src)
+
   }
 }
