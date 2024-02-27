@@ -1,7 +1,9 @@
 <h1>Images</h1>
 
 <% @images.each do |image| %>
-  <%= tag.section class: 'my-5', data: {controller: 'images'} do %>
+  <%= tag.section class: 'my-5',
+    data: {controller: 'images toast', action: 'images:copy->toast#showMe',
+    'images-loading-class': 'disabled', 'images-id-value': image.id} do %>
     <%= image_tag image.url, class: 'image-thumbnail rounded d-block',
             alt: image.title, data: {'action': 'click->images#getUrl',
             'images-target': 'image'} %>
@@ -9,7 +11,7 @@
   <% end %>
 <% end %>
 
-<div class="toast-container" data-controller='toast' data-action="images:copy@window->toast#showMe">
+<div class="toast-container">
   <div id="copyToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
     <div class="toast-header">
 
