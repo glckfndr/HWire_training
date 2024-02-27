@@ -1,5 +1,6 @@
 import { Controller } from "@hotwired/stimulus";
-
+import { patch } from "@rails/request.js";
+import { removeAllListeners } from "nodemon";
 export default class extends Controller {
   static targets = ["image", "title", "save"];
   static classes = ["loading"];
@@ -29,9 +30,11 @@ export default class extends Controller {
     ev.target.disabled = true;
     ev.target.classList.add(this.loadingClass);
 
-    const formData = new FormData();
-    formData.append("image[title]", this.titleTarget.innerText);
-    await this.doPatch(`/api/images/${this.idValue}`, formData);
+    // const formData = new FormData();
+    // formData.append("image[title]", this.titleTarget.innerText);
+    //await this.doPatch(`/api/images/${this.idValue}`, formData);
+    await this.doPatch(`/api/images/${this.idValue}`,
+      JSON.stringify({image: {title: this.titleTarget.innerText}}));
     ev.target.remove();
   }
 
@@ -42,21 +45,26 @@ export default class extends Controller {
     navigator.clipboard.writeText(e.target.src);
   }
 
-  imageTargetConnected(e) {
-    console.log(e.alt);
-  }
+  // imageTargetConnected(e) {
+  //   console.log(e.alt);
+  // }
 
-  titleTargetConnected(el) {
-    console.log(el);
-  }
+  // titleTargetConnected(el) {
+  //   console.log(el);
+  // }
 
   async doPatch(url, body) {
-    const csrfToken = document.getElementsByName("csrf-token")[0].content;
+    const responce = await patch(url, { body: body });
+    if (!responce.ok) {
+      raise("Patch failed!");
+    }
 
-    await fetch(url, {
-      method: "PATCH",
-      body: body,
-      headers: { "X-CSRF-Token": csrfToken },
-    });
+    // const csrfToken = document.getElementsByName("csrf-token")[0].content;
+
+    // await fetch(url, {
+    //   method: "PATCH",
+    //   body: body,
+    //   headers: { "X-CSRF-Token": csrfToken },
+    // });
   }
 }
